@@ -91,8 +91,9 @@ const getRecipeByBMICategory = async (category) => {
             throw new Error(
                 "Gagal otentikasi. Periksa kembali API Key Spoonacular Anda."
             );
+        } else {
+            throw new Error("Gagal mengambil data resep dari Spoonacular");
         }
-        throw new Error("Gagal mengambil data resep dari Spoonacular");
     }
 };
 

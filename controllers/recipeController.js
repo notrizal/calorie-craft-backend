@@ -17,7 +17,7 @@ const getRecipeDetails = async (req, res) => {
         // Kirim pesan error jika terjadi masalah
         console.error(error); // Log error di server
         res.status(500).json({
-            message: error.message || "An internal server error occurred.",
+            message: error.message,
         });
     }
 };
