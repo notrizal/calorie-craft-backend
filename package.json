@@ -7,7 +7,8 @@
     "scripts": {
         "start": "node index.js",
         "test": "jest --detectOpenHandles",
-        "dev": "nodemon index.js"
+        "dev": "nodemon index.js",
+        "test:coverage": "jest --coverage --detectOpenHandles"
     },
     "keywords": [],
     "author": "",
