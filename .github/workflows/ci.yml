@@ -1,0 +1,53 @@
+# Nama workflow yang akan muncul di tab "Actions" GitHub
+name: Backend CI & Test
+
+# Kapan workflow ini akan dijalankan
+on:
+    # Jalankan pada saat push ke cabang 'main', 'master', atau 'develop'
+    push:
+        branches: [main, master, develop]
+    # Jalankan juga pada saat ada Pull Request yang menargetkan cabang-cabang tersebut
+    pull_request:
+        branches: [main, master, develop]
+
+# Daftar pekerjaan (jobs) yang akan dilakukan
+jobs:
+    # Kita hanya punya satu job bernama 'build-and-test'
+    build-and-test:
+        # Jalankan di lingkungan Ubuntu versi terbaru
+        runs-on: ubuntu-latest
+
+        # Langkah-langkah yang akan dieksekusi
+        steps:
+            # Langkah 1: Mengambil kode dari repositori Anda
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            # Langkah 2: Mengatur pnpm (ini penting karena Anda menggunakan pnpm)
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v2
+              with:
+                  version: 8 # Sesuaikan dengan versi pnpm yang Anda gunakan jika perlu
+
+            # Langkah 3: Mengatur lingkungan Node.js
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "18.x" # Sesuaikan dengan versi Node.js proyek Anda
+                  cache: "pnpm" # Aktifkan caching untuk pnpm agar instalasi lebih cepat
+
+            # Langkah 4: Menginstal semua dependensi proyek
+            - name: Install dependencies
+              run: pnpm install
+
+            # Langkah 5: Menjalankan tes
+            - name: Run tests
+              run: pnpm test
+              # Jika Anda perlu API Key untuk tes, tambahkan env di sini.
+              # Untuk saat ini, tes Anda di-mock, jadi ini tidak wajib.
+              # env:
+              #   SPOONACULAR_API_KEY: ${{ secrets.SPOONACULAR_API_KEY }}
+
+            # Langkah 6 (Opsional): Menjalankan tes dengan coverage
+            - name: Run tests with coverage
+              run: pnpm run test:coverage
